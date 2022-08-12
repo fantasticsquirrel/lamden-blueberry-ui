@@ -211,23 +211,6 @@ $("#buy_button").click(function () {
     current_action_arg = name;
 });
 
-$("#buy_button").click(function () {
-    let name = $("#new_plant_name").val();
-    const detail = JSON.stringify({
-        contractName: "currency",
-        methodName: 'approve',
-        networkType: 'mainnet',
-        kwargs: {
-            amount: Number(475),
-            to: contract
-        },
-
-        stampLimit: 200,
-    });
-    document.dispatchEvent(new CustomEvent('lamdenWalletSendTx', { detail }));
-    current_action = "buy";
-    current_action_arg = name;
-});
 
 document.addEventListener('lamdenWalletTxStatus', (response) => {
     
