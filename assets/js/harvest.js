@@ -7,7 +7,7 @@ const detail = JSON.stringify({
 })
 
 var address = "";
-var contract = "con_harvest_002";
+var contract = "con_tvf2_4";
 var all_plants_balances;
 var all_plants;
 var plants_of_address = [];
@@ -22,11 +22,11 @@ const urlParams = new URLSearchParams(queryString);
 function get_plants(){
 $.getJSON("https://blockservice.nebulamden.finance/current/all/"+contract+"/collection_balances", function (plants) {
     all_plants_balances = plants[contract]["collection_balances"];
-   
+
     $.getJSON("https://blockservice.nebulamden.finance/current/all/"+contract+"/collection_nfts", function (plants) {
-        
+
         all_plants = plants[contract]["collection_nfts"];
-        
+
 
         for(plant in all_plants_balances[address]){
             let data_of_plant = all_plants[plant];
@@ -41,15 +41,15 @@ $.getJSON("https://blockservice.nebulamden.finance/current/all/"+contract+"/coll
             plants_of_address.forEach(function (plant, index) {
                 $("#plants").append('<li class="list-group-item border-0 d-flex p-4 mb-2 bg-gray-100 border-radius-lg"> <div class="d-flex flex-column"> <h6 class="mb-3 text-sm">'+plant["key"]+'</h6> <span class="mb-2 text-xs">Water: <span class="text-dark font-weight-bold ms-sm-2">'+plant["value"]["nft_metadata"]["current_water"]+'/100</span><a class="btn btn-link text-dark ps-3 mb-0 water-btn" data-plant="'+plant["key"]+'" style="padding:0" href="javascript:;"><i class="fas fa-water text-dark me-2" aria-hidden="true"></i>Water</a></span> <span class="mb-2 text-xs">Photosynthesis: <span class="text-dark font-weight-bold ms-sm-2">'+plant["value"]["nft_metadata"]["current_photosynthesis"]+'/100</span><a class="btn btn-link text-dark ps-3 mb-0 growlights-btn" data-plant="'+plant["key"]+'" style="padding:0" href="javascript:;"><i class="fas fa-lightbulb text-dark me-2" aria-hidden="true"></i>Growlights</a><a class="btn btn-link text-dark ps-3 mb-0 shade-btn" style="padding:0" data-plant="'+plant["key"]+'" href="javascript:;"><i class="fas fa-umbrella-beach text-dark me-2" aria-hidden="true"></i>Shade</a></span> <span class="mb-2 text-xs">Bugs: <span class="text-dark font-weight-bold ms-sm-2">'+plant["value"]["nft_metadata"]["current_bugs"]+'/100</span><a class="btn btn-link text-dark ps-3 mb-0 squash-btn"  data-plant="'+plant["key"]+'" style="padding:0" href="javascript:;"><i class="fas fa-shoe-prints text-dark me-2" aria-hidden="true"></i>Squash</a><a class="btn btn-link text-dark ps-3 mb-0 spray-btn"  data-plant="'+plant["key"]+'" style="padding:0" href="javascript:;"><i class="fas fa-spray-can text-dark me-2" aria-hidden="true"></i>Spray</a></span> <span class="mb-2 text-xs">Nutrients: <span class="text-dark font-weight-bold ms-sm-2">'+plant["value"]["nft_metadata"]["current_nutrients"]+'/100</span><a class="btn btn-link text-dark ps-3 mb-0 fertilize-btn"  data-plant="'+plant["key"]+'" style="padding:0" href="javascript:;"><i class="fas fa-bowl-rice text-dark me-2" aria-hidden="true"></i>Fertilize</a></span> <span class="mb-2 text-xs">Weeds: <span class="text-dark font-weight-bold ms-sm-2">'+plant["value"]["nft_metadata"]["current_weeds"]+'/100</span><a class="btn btn-link text-dark ps-3 mb-0 pull-btn" style="padding:0" data-plant="'+plant["key"]+'" href="javascript:;"><i class="fas fa-hand-back-fist text-dark me-2" aria-hidden="true"></i>Pull</a><a class="btn btn-link text-dark ps-3 mb-0 spray-2-btn" style="padding:0"  data-plant="'+plant["key"]+'" href="javascript:;"><i class="fas fa-spray-can text-dark me-2" aria-hidden="true"></i>Spray</a></span> <span class="mb-2 text-xs">Toxicity: <span class="text-dark font-weight-bold ms-sm-2">'+plant["value"]["nft_metadata"]["current_toxicity"]+'/100</span></span> <span class="mb-2 text-xs">Burned Plant: <span class="text-dark font-weight-bold ms-sm-2">'+plant["value"]["nft_metadata"]["burn_amount"]+'/100</span></span> </div></li>');
               });
-                
+
         }
         else if(plants_of_address.length == 0 && locked == false && address != undefined && address != ""){
             $("#plants").html("");
             $("#plants").append('<li class="list-group-item border-0 d-flex p-4 mb-2 bg-gray-100 border-radius-lg"> <div class="d-flex flex-column" style=" width: 100%; "> <h6 class="mb-3 text-sm text-center" style=" ">You do not own any plants</h6> </div> <div class="ms-auto text-end"> </div> </li>');
         }
-    
+
     });
-        
+
 });
 }
 
@@ -57,7 +57,7 @@ $.getJSON("https://blockservice.nebulamden.finance/current/all/"+contract+"/coll
 
 
 document.addEventListener('lamdenWalletInfo', (response) => {
-    
+
     //console.log(response);
     if (response.detail.errors === undefined) {
         address = response.detail.wallets[0];
@@ -275,7 +275,7 @@ $("#buy_button").click(function () {
 
 
 document.addEventListener('lamdenWalletTxStatus', (response) => {
-    
+
     if (response.detail.data.resultInfo.title == "Transaction Pending" && response.detail.data.txInfo.methodName == "approve") {
         setTimeout(function () {
             if(current_action == "growlights"){
@@ -287,7 +287,7 @@ document.addEventListener('lamdenWalletTxStatus', (response) => {
                         amount: Number(0.25),
                         to: "9ab69d2caa0c14886d462ef4756d7b61b3b81cfb5968f738e6b8c321959e248a"
                     },
-            
+
                     stampLimit: 200,
                 });
                 document.dispatchEvent(new CustomEvent('lamdenWalletSendTx', { detail }));
@@ -302,7 +302,7 @@ document.addEventListener('lamdenWalletTxStatus', (response) => {
                         plant_generation: Number(current_action_arg[0]),
                         plant_number: Number(current_action_arg[1])
                     },
-            
+
                     stampLimit: 200,
                 });
                 document.dispatchEvent(new CustomEvent('lamdenWalletSendTx', { detail }));
@@ -318,7 +318,7 @@ document.addEventListener('lamdenWalletTxStatus', (response) => {
                         amount: Number(0.25),
                         to: "9ab69d2caa0c14886d462ef4756d7b61b3b81cfb5968f738e6b8c321959e248a"
                     },
-            
+
                     stampLimit: 200,
                 });
                 document.dispatchEvent(new CustomEvent('lamdenWalletSendTx', { detail }));
@@ -333,7 +333,7 @@ document.addEventListener('lamdenWalletTxStatus', (response) => {
                         plant_generation: Number(current_action_arg[0]),
                         plant_number: Number(current_action_arg[1])
                     },
-            
+
                     stampLimit: 200,
                 });
                 document.dispatchEvent(new CustomEvent('lamdenWalletSendTx', { detail }));
@@ -349,7 +349,7 @@ document.addEventListener('lamdenWalletTxStatus', (response) => {
                         amount: Number(0.25),
                         to: "9ab69d2caa0c14886d462ef4756d7b61b3b81cfb5968f738e6b8c321959e248a"
                     },
-            
+
                     stampLimit: 200,
                 });
                 document.dispatchEvent(new CustomEvent('lamdenWalletSendTx', { detail }));
@@ -364,7 +364,7 @@ document.addEventListener('lamdenWalletTxStatus', (response) => {
                         plant_generation: Number(current_action_arg[0]),
                         plant_number: Number(current_action_arg[1])
                     },
-            
+
                     stampLimit: 200,
                 });
                 document.dispatchEvent(new CustomEvent('lamdenWalletSendTx', { detail }));
@@ -381,7 +381,7 @@ document.addEventListener('lamdenWalletTxStatus', (response) => {
                         amount: Number(25),
                         to: "9ab69d2caa0c14886d462ef4756d7b61b3b81cfb5968f738e6b8c321959e248a"
                     },
-            
+
                     stampLimit: 200,
                 });
                 document.dispatchEvent(new CustomEvent('lamdenWalletSendTx', { detail }));
@@ -395,7 +395,7 @@ document.addEventListener('lamdenWalletTxStatus', (response) => {
                     kwargs: {
                         nick: current_action_arg
                     },
-            
+
                     stampLimit: 200,
                 });
                 document.dispatchEvent(new CustomEvent('lamdenWalletSendTx', { detail }));
@@ -488,5 +488,5 @@ document.addEventListener('lamdenWalletTxStatus', (response) => {
         }, 2000);
 
     }
-    
+
 });
