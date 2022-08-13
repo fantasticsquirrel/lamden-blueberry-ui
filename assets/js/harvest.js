@@ -2,7 +2,7 @@ const detail = JSON.stringify({
     appName: 'Harvest',
     version: '0.0.1',
     logo: 'logo.png',
-    contractName: 'con_harvest_002',
+    contractName: 'con_tvf2_4',
     networkType: 'mainnet',
 })
 
