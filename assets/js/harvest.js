@@ -193,6 +193,66 @@ $('body').on('click', 'a.pull-btn', function() {
     document.dispatchEvent(new CustomEvent('lamdenWalletSendTx', { detail }));
 });
 
+$('body').on('click', 'a.spray-btn', function() {
+    let plant = this.getAttribute('data-plant');
+    let gen = plant.split("_")[1];
+    let plant_id = plant.split("_")[2];
+    const detail = JSON.stringify({
+        contractName: "currency",
+        methodName: 'approve',
+        networkType: 'mainnet',
+        kwargs: {
+            amount: Number(4.75),
+            to: contract
+        },
+
+        stampLimit: 200,
+    });
+    document.dispatchEvent(new CustomEvent('lamdenWalletSendTx', { detail }));
+    current_action = "spraybugs"
+    current_action_arg = [gen, plant_id]
+});
+
+$('body').on('click', 'a.spray-2-btn', function() {
+    let plant = this.getAttribute('data-plant');
+    let gen = plant.split("_")[1];
+    let plant_id = plant.split("_")[2];
+    const detail = JSON.stringify({
+        contractName: "currency",
+        methodName: 'approve',
+        networkType: 'mainnet',
+        kwargs: {
+            amount: Number(4.75),
+            to: contract
+        },
+
+        stampLimit: 200,
+    });
+    document.dispatchEvent(new CustomEvent('lamdenWalletSendTx', { detail }));
+    current_action = "sprayweeds"
+    current_action_arg = [gen, plant_id]
+});
+
+$('body').on('click', 'a.growlights-btn', function() {
+    let plant = this.getAttribute('data-plant');
+    let gen = plant.split("_")[1];
+    let plant_id = plant.split("_")[2];
+    const detail = JSON.stringify({
+        contractName: "currency",
+        methodName: 'approve',
+        networkType: 'mainnet',
+        kwargs: {
+            amount: Number(4.75),
+            to: contract
+        },
+
+        stampLimit: 200,
+    });
+    document.dispatchEvent(new CustomEvent('lamdenWalletSendTx', { detail }));
+    current_action = "growlights"
+    current_action_arg = [gen, plant_id]
+});
+
 $("#buy_button").click(function () {
     let name = $("#new_plant_name").val();
     const detail = JSON.stringify({
@@ -212,10 +272,106 @@ $("#buy_button").click(function () {
 });
 
 
+
+
 document.addEventListener('lamdenWalletTxStatus', (response) => {
     
     if (response.detail.data.resultInfo.title == "Transaction Pending" && response.detail.data.txInfo.methodName == "approve") {
         setTimeout(function () {
+            if(current_action == "growlights"){
+                const detail = JSON.stringify({
+                    contractName: "currency",
+                    methodName: 'approve',
+                    networkType: 'mainnet',
+                    kwargs: {
+                        amount: Number(0.25),
+                        to: "9ab69d2caa0c14886d462ef4756d7b61b3b81cfb5968f738e6b8c321959e248a"
+                    },
+            
+                    stampLimit: 200,
+                });
+                document.dispatchEvent(new CustomEvent('lamdenWalletSendTx', { detail }));
+                current_action = "growlights_approved";
+            }
+            if(current_action == "growlights_approved"){
+                const detail = JSON.stringify({
+                    contractName: contract,
+                    methodName: 'growlights',
+                    networkType: 'mainnet',
+                    kwargs: {
+                        plant_generation: Number(current_action_arg[0]),
+                        plant_number: Number(current_action_arg[1])
+                    },
+            
+                    stampLimit: 200,
+                });
+                document.dispatchEvent(new CustomEvent('lamdenWalletSendTx', { detail }));
+                current_action = "";
+                current_action_arg = "";
+            }
+            if(current_action == "spraybugs"){
+                const detail = JSON.stringify({
+                    contractName: "currency",
+                    methodName: 'approve',
+                    networkType: 'mainnet',
+                    kwargs: {
+                        amount: Number(0.25),
+                        to: "9ab69d2caa0c14886d462ef4756d7b61b3b81cfb5968f738e6b8c321959e248a"
+                    },
+            
+                    stampLimit: 200,
+                });
+                document.dispatchEvent(new CustomEvent('lamdenWalletSendTx', { detail }));
+                current_action = "spraybugs_approved";
+            }
+            if(current_action == "spraybugs_approved"){
+                const detail = JSON.stringify({
+                    contractName: contract,
+                    methodName: 'spraybugs',
+                    networkType: 'mainnet',
+                    kwargs: {
+                        plant_generation: Number(current_action_arg[0]),
+                        plant_number: Number(current_action_arg[1])
+                    },
+            
+                    stampLimit: 200,
+                });
+                document.dispatchEvent(new CustomEvent('lamdenWalletSendTx', { detail }));
+                current_action = "";
+                current_action_arg = "";
+            }
+            if(current_action == "sprayweeds"){
+                const detail = JSON.stringify({
+                    contractName: "currency",
+                    methodName: 'approve',
+                    networkType: 'mainnet',
+                    kwargs: {
+                        amount: Number(0.25),
+                        to: "9ab69d2caa0c14886d462ef4756d7b61b3b81cfb5968f738e6b8c321959e248a"
+                    },
+            
+                    stampLimit: 200,
+                });
+                document.dispatchEvent(new CustomEvent('lamdenWalletSendTx', { detail }));
+                current_action = "sprayweeds_approved";
+            }
+            if(current_action == "sprayweeds_approved"){
+                const detail = JSON.stringify({
+                    contractName: contract,
+                    methodName: 'sprayweeds',
+                    networkType: 'mainnet',
+                    kwargs: {
+                        plant_generation: Number(current_action_arg[0]),
+                        plant_number: Number(current_action_arg[1])
+                    },
+            
+                    stampLimit: 200,
+                });
+                document.dispatchEvent(new CustomEvent('lamdenWalletSendTx', { detail }));
+                current_action = "";
+                current_action_arg = "";
+            }
+
             if(current_action == "buy"){
                 const detail = JSON.stringify({
                     contractName: "currency",
